@@ -1,5 +1,10 @@
+import * as  os from 'node:os';
+import { registerCommandLineHandler } from './command-line-handler.js';
 import { getUserName } from './process-arguments-handler.js';
 
-const userName = getUserName();
+const fileMangerState = {
+	userName: getUserName(),
+	currentDirectory: os.homedir(),
+};
 
-console.log(`Welcome to the File Manager, ${userName}!`);
+registerCommandLineHandler(fileMangerState);
