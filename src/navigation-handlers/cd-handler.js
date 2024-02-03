@@ -28,12 +28,19 @@ export const cdHandler = async (command, fileMangerState) => {
 	if (!pathToProcess.startsWith(userHomeDirectory)) {
 		return {
 			isAppropriateHandler: true,
-			isOperationFailed: true,
+			isInvalidInput: true,
 		};
 	}
 
 	try {
-		await fs.access(pathToProcess, fs.constants.F_OK);
+		const pathStat = await fs.stat(pathToProcess);
+
+		if (!pathStat.isDirectory()) {
+			return {
+				isAppropriateHandler: true,
+				isInvalidInput: true,
+			};
+		}
 
 		fileMangerState.currentDirectory = pathToProcess;
 
