@@ -2,14 +2,14 @@ import * as  os from 'node:os';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 
-const CD_HANDLER_COMMAND_REGEX = /(^cd)\s+(.+)/;
+const CD_HANDLER_COMMAND_REGEX = /^cd\s+(.+)/;
 
 export const cdHandler = async (command, fileMangerState) => {
-	const [, cdMatch, pathMatch] = command.match(CD_HANDLER_COMMAND_REGEX);
-
-	if (!cdMatch) {
+	if (!CD_HANDLER_COMMAND_REGEX.test(command)) {
 		return { isAppropriateHandler: false };
 	}
+
+	const [, pathMatch] = command.match(CD_HANDLER_COMMAND_REGEX);
 
 	if (!pathMatch) {
 		return {
