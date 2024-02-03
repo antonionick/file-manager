@@ -3,7 +3,7 @@ import * as path from 'node:path';
 
 const UP_HANDLE_COMMAND = 'up';
 
-export const upHandler = (command, fileMangerState) => {
+export const upHandler = async (command, fileMangerState) => {
 	if (command !== UP_HANDLE_COMMAND) {
 		return { isAppropriateHandler: false };
 	}
