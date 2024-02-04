@@ -2,8 +2,8 @@ import * as readline from 'node:readline';
 import * as  process from 'node:process';
 import { exitHandlerFabric } from './exit-handler.js';
 
-export const registerCommandLineHandler = (sourceHandlers, fileMangerState) => {
-	console.log(`Welcome to the File Manager, ${fileMangerState.userName}!`);
+export const registerCommandLineHandler = (sourceHandlers, fileManagerState) => {
+	console.log(`Welcome to the File Manager, ${fileManagerState.userName}!`);
 
 	const rl = readline.createInterface({
 		input: process.stdin,
@@ -15,19 +15,19 @@ export const registerCommandLineHandler = (sourceHandlers, fileMangerState) => {
 		...sourceHandlers,
 	];
 
-	handleCommandLinesRequests(rl, handlers, fileMangerState)
+	handleCommandLinesRequests(rl, handlers, fileManagerState)
 
-	rl.on('close', () => console.log(`Thank you for using File Manager, ${fileMangerState.userName}, goodbye!`));
+	rl.on('close', () => console.log(`Thank you for using File Manager, ${fileManagerState.userName}, goodbye!`));
 };
 
-const handleCommandLinesRequests = async (rl, handlers, fileMangerState) => {
-	logCurrentDirectory(fileMangerState);
+const handleCommandLinesRequests = async (rl, handlers, fileManagerState) => {
+	logCurrentDirectory(fileManagerState);
 
 	for await (let command of rl) {
 		let handlerResult;
 
 		for (let handler of handlers) {
-			handlerResult = await handler(command.trim(), fileMangerState);
+			handlerResult = await handler(command.trim(), fileManagerState);
 
 			if (handlerResult.isAppropriateHandler) {
 				break;
@@ -47,9 +47,9 @@ const handleCommandLinesRequests = async (rl, handlers, fileMangerState) => {
 			console.log('Operation failed');
 		}
 
-		logCurrentDirectory(fileMangerState);
+		logCurrentDirectory(fileManagerState);
 	}
 };
 
-const logCurrentDirectory = (fileMangerState) =>
-	console.log(`You are currently in ${fileMangerState.currentDirectory}`);
+const logCurrentDirectory = (fileManagerState) =>
+	console.log(`You are currently in ${fileManagerState.currentDirectory}`);

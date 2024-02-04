@@ -4,7 +4,7 @@ import * as fs from 'node:fs/promises';
 
 const CD_HANDLER_COMMAND_REGEX = /^cd\s+(\S+)/;
 
-export const cdHandler = async (command, fileMangerState) => {
+export const cdHandler = async (command, fileManagerState) => {
 	if (!CD_HANDLER_COMMAND_REGEX.test(command)) {
 		return { isAppropriateHandler: false };
 	}
@@ -14,7 +14,7 @@ export const cdHandler = async (command, fileMangerState) => {
 
 	const pathToProcess = path.isAbsolute(normalizedPath)
 		? normalizedPath
-		: path.resolve(fileMangerState.currentDirectory, normalizedPath);
+		: path.resolve(fileManagerState.currentDirectory, normalizedPath);
 
 	const userHomeDirectory = os.homedir();
 
@@ -35,7 +35,7 @@ export const cdHandler = async (command, fileMangerState) => {
 			};
 		}
 
-		fileMangerState.currentDirectory = pathToProcess;
+		fileManagerState.currentDirectory = pathToProcess;
 
 		return { isAppropriateHandler: true };
 	} catch {

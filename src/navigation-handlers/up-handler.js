@@ -3,16 +3,16 @@ import * as path from 'node:path';
 
 const UP_HANDLE_COMMAND = 'up';
 
-export const upHandler = async (command, fileMangerState) => {
+export const upHandler = async (command, fileManagerState) => {
 	if (command !== UP_HANDLE_COMMAND) {
 		return { isAppropriateHandler: false };
 	}
 
-	if (fileMangerState.currentDirectory !== os.homedir()) {
+	if (fileManagerState.currentDirectory !== os.homedir()) {
 		const updatedCurrentDirectory =
-			path.resolve(fileMangerState.currentDirectory, '../');
+			path.resolve(fileManagerState.currentDirectory, '../');
 
-		fileMangerState.currentDirectory = updatedCurrentDirectory;
+		fileManagerState.currentDirectory = updatedCurrentDirectory;
 	}
 
 	return { isAppropriateHandler: true };

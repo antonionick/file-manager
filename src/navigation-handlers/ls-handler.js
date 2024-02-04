@@ -2,14 +2,14 @@ import *  as  fs from 'node:fs/promises';
 
 const LS_HANDLE_COMMAND = 'ls';
 
-export const lsHandler = async (command, fileMangerState) => {
+export const lsHandler = async (command, fileManagerState) => {
 	if (command !== LS_HANDLE_COMMAND) {
 		return { isAppropriateHandler: false };
 	}
 
 	try {
 		const dirInfo = await fs.readdir(
-			fileMangerState.currentDirectory,
+			fileManagerState.currentDirectory,
 			{ withFileTypes: true },
 		);
 

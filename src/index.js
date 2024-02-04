@@ -9,9 +9,9 @@ const handlers = [
 	...navigationHandlers,
 ];
 
-const fileMangerState = {
+const fileManagerState = {
 	userName: getUserName(),
 	currentDirectory: os.homedir(),
 };
 
-registerCommandLineHandler(handlers, fileMangerState);
+registerCommandLineHandler(handlers, fileManagerState);

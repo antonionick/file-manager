@@ -3,7 +3,7 @@ import * as  fs from 'node:fs/promises';
 
 const CAT_HANDLER_COMMAND_REGEX = /^cat\s+(\S+)/;
 
-export const catHandler = async (command, fileMangerState) => {
+export const catHandler = async (command, fileManagerState) => {
 	if (!CAT_HANDLER_COMMAND_REGEX.test(command)) {
 		return { isAppropriateHandler: false };
 	}
@@ -11,7 +11,7 @@ export const catHandler = async (command, fileMangerState) => {
 	const [, fileName] = command.match(CAT_HANDLER_COMMAND_REGEX);
 
 	try {
-		const filePath = path.join(fileMangerState.currentDirectory, fileName);
+		const filePath = path.join(fileManagerState.currentDirectory, fileName);
 		const fileHandler = await fs.open(filePath, 'r');
 
 		await new Promise((resolve, reject) => {

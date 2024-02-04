@@ -3,7 +3,7 @@ import * as  fs from 'node:fs/promises';
 
 const RENAME_HANDLER_COMMAND_REGEX = /^rn\s+(\S+)\s+(\S+)/;
 
-export const renameHandler = async (command, fileMangerState) => {
+export const renameHandler = async (command, fileManagerState) => {
 	if (!RENAME_HANDLER_COMMAND_REGEX.test(command)) {
 		return { isAppropriateHandler: false };
 	}
@@ -13,9 +13,9 @@ export const renameHandler = async (command, fileMangerState) => {
 
 	try {
 		const currentFilePath =
-			 path.join(fileMangerState.currentDirectory, currentFileName);
+			 path.join(fileManagerState.currentDirectory, currentFileName);
 		const newFilePath =
-			 path.join(fileMangerState.currentDirectory, newFileName);
+			 path.join(fileManagerState.currentDirectory, newFileName);
 
 		await fs.rename(currentFilePath, newFilePath);
 
