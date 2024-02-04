@@ -1,19 +1,18 @@
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 
-const ADD_HANDLER_COMMAND_REGEX = /^add\s+(\S+)/;
+const REMOVE_COMMAND_REGEX = /^rm\s+(\S+)/;
 
-export const addHandler = async (command, fileManagerState) => {
-	if (!ADD_HANDLER_COMMAND_REGEX.test(command)) {
+export const rmHandler = async (command, fileManagerState) => {
+	if (!REMOVE_COMMAND_REGEX.test(command)) {
 		return { isAppropriateHandler: false };
 	}
 
-	const [, fileName] = command.match(ADD_HANDLER_COMMAND_REGEX);
+	const [, fileName] = command.match(REMOVE_COMMAND_REGEX);
 	const filePath = path.join(fileManagerState.currentDirectory, fileName);
 
 	try {
-		const fileHandler = await fs.open(filePath, 'a');
-		await fileHandler.close();
+		await fs.rm(filePath);
 
 		return { isAppropriateHandler: true };
 	} catch {
