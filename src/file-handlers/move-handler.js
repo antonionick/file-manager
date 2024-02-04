@@ -2,15 +2,15 @@ import * as  os from 'node:os';
 import * as  path from 'node:path';
 import * as  fs from 'node:fs/promises';``
 
-const COPY_HANDLER_COMMAND_REGEX = /^cp\s+(\S+)\s+(\S+)/;
+const MOVE_HANDLER_COMMAND_REGEX = /^mv\s+(\S+)\s+(\S+)/;
 
-export const copyHandler = async (command, fileManagerState) => {
-	if (!COPY_HANDLER_COMMAND_REGEX.test(command)) {
+export const moveHandler = async (command, fileManagerState) => {
+	if (!MOVE_HANDLER_COMMAND_REGEX.test(command)) {
 		return { isAppropriateHandler: false };
 	}
 
 	const [, fileName, destinationPath] =
-		command.match(COPY_HANDLER_COMMAND_REGEX);
+		command.match(MOVE_HANDLER_COMMAND_REGEX);
 
 	const filePath = path.join(fileManagerState.currentDirectory, fileName);
 	const normalizedPath = path.normalize(destinationPath);
@@ -47,6 +47,8 @@ export const copyHandler = async (command, fileManagerState) => {
 		readStream.pipe(writeStream);
 
 		await Promise.all([readStreamPromise, writeStreamPromise]);
+
+		await fs.rm(filePath);
 
 		return { isAppropriateHandler: true };
 	} catch {
