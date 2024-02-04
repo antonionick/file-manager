@@ -19,8 +19,8 @@ export const catHandler = async (command, fileManagerState) => {
 
 			readStream.pipe(process.stdout);
 
-			readStream.on('close', () => resolve());
-			readStream.on('error', () => reject());
+			readStream.on('close', resolve);
+			readStream.on('error', reject);
 		});
 
 		return { isAppropriateHandler: true };

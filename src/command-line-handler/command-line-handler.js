@@ -52,4 +52,4 @@ const handleCommandLinesRequests = async (rl, handlers, fileManagerState) => {
 };
 
 const logCurrentDirectory = (fileManagerState) =>
-	console.log(`You are currently in ${fileManagerState.currentDirectory}`);
+	console.log(`\nYou are currently in ${fileManagerState.currentDirectory}`);

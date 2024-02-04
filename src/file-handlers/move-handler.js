@@ -36,12 +36,12 @@ export const moveHandler = async (command, fileManagerState) => {
 		const writeStream = destFileHandler.createWriteStream();
 
 		const readStreamPromise = new Promise((resolve, reject) => {
-			readStream.on('close', () => resolve());
-			readStream.on('error', () => reject());
+			readStream.on('close', resolve);
+			readStream.on('error', reject);
 		});
 		const writeStreamPromise = new Promise((resolve, reject) => {
-			writeStream.on('close', () => resolve());
-			writeStream.on('error', () => reject());
+			writeStream.on('close', resolve);
+			writeStream.on('error', reject);
 		});
 
 		readStream.pipe(writeStream);
