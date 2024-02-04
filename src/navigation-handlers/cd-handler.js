@@ -2,7 +2,7 @@ import * as  os from 'node:os';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 
-const CD_HANDLER_COMMAND_REGEX = /^cd\s+(.+)/;
+const CD_HANDLER_COMMAND_REGEX = /^cd\s+(\S+)/;
 
 export const cdHandler = async (command, fileMangerState) => {
 	if (!CD_HANDLER_COMMAND_REGEX.test(command)) {
@@ -10,15 +10,8 @@ export const cdHandler = async (command, fileMangerState) => {
 	}
 
 	const [, pathMatch] = command.match(CD_HANDLER_COMMAND_REGEX);
-
-	if (!pathMatch) {
-		return {
-			isAppropriateHandler: true,
-			isInvalidInput: true,
-		};
-	}
-
 	const normalizedPath = path.normalize(pathMatch);
+
 	const pathToProcess = path.isAbsolute(normalizedPath)
 		? normalizedPath
 		: path.resolve(fileMangerState.currentDirectory, normalizedPath);

@@ -23,11 +23,7 @@ export const lsHandler = async (command, fileMangerState) => {
 					return item1.Type - item2.Type;
 				}
 
-				if (item1.Type === 'Directory' && item2.Type !== 'Directory') {
-					return -1;
-				}
-
-				return 1;
+				return item1.Type === 'Directory' && item2.Type !== 'Directory' ? -1 : 1;
 			});
 
 		console.table(result);
