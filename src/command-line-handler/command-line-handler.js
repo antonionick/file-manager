@@ -1,13 +1,19 @@
 import * as readline from 'node:readline';
 import * as  process from 'node:process';
+import { exitHandlerFabric } from './exit-handler.js';
 
-export const registerCommandLineHandler = (handlers, fileMangerState) => {
+export const registerCommandLineHandler = (sourceHandlers, fileMangerState) => {
 	console.log(`Welcome to the File Manager, ${fileMangerState.userName}!`);
 
 	const rl = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout,
 	});
+
+	const handlers = [
+		exitHandlerFabric(rl),
+		...sourceHandlers,
+	];
 
 	handleCommandLinesRequests(rl, handlers, fileMangerState)
 
@@ -18,24 +24,26 @@ const handleCommandLinesRequests = async (rl, handlers, fileMangerState) => {
 	logCurrentDirectory(fileMangerState);
 
 	for await (let command of rl) {
-		let isInvalidInput = false;
-		let isOperationHandled = false;
-		let isOperationFailed = false;
+		let handlerResult;
 
 		for (let handler of handlers) {
-			const handlerResult = await handler(command.trim(), fileMangerState);
+			handlerResult = await handler(command.trim(), fileMangerState);
 
 			if (handlerResult.isAppropriateHandler) {
-				isOperationHandled = true;
-				isInvalidInput = handlerResult.isInvalidInput ?? false;
-				isOperationFailed = handlerResult.isOperationFailed ?? false
 				break;
 			}
 		}
 
-		if (!isOperationHandled || isInvalidInput) {
+		if (handlerResult.isClosed) {
+			break;
+		}
+
+		if (
+			!handlerResult.isAppropriateHandler
+			|| handlerResult.isInvalidInput
+		) {
 			console.log('Invalid input');
-		} else if (isOperationFailed) {
+		} else if (handlerResult.isOperationFailed) {
 			console.log('Operation failed');
 		}
 
