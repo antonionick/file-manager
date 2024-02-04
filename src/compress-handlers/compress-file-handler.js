@@ -20,11 +20,9 @@ export const compressFileHandler = async (command, fileManagerState) => {
 	const filePath = path.join(fileManagerState.currentDirectory, fileName);
 	const normalizedPath = path.normalize(destinationPath);
 
-	const compressedFileName = `${fileName}.compressed`;
-
 	const pathToProcess = path.isAbsolute(normalizedPath)
-		? path.join(normalizedPath, compressedFileName)
-		: path.resolve(fileManagerState.currentDirectory, normalizedPath, compressedFileName);
+		? normalizedPath
+		: path.resolve(fileManagerState.currentDirectory, normalizedPath);
 
 	const userHomeDirectory = os.homedir();
 

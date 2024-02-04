@@ -20,11 +20,9 @@ export const decompressFileHandler = async (command, fileManagerState) => {
 	const filePath = path.join(fileManagerState.currentDirectory, fileName);
 	const normalizedPath = path.normalize(destinationPath);
 
-	const decompressedFileName = `${fileName}.decompressed`;
-
 	const pathToProcess = path.isAbsolute(normalizedPath)
-		? path.join(normalizedPath, decompressedFileName)
-		: path.resolve(fileManagerState.currentDirectory, normalizedPath, decompressedFileName);
+		? normalizedPath
+		: path.resolve(fileManagerState.currentDirectory, normalizedPath);
 
 	const userHomeDirectory = os.homedir();
 
