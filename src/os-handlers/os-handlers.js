@@ -1,3 +1,4 @@
+import { architectureHandler } from './architecture-handler.js';
 import { cpusHandler } from './cpus-handler.js';
 import { eolHandler } from './eol-handler.js';
 import { homedirHandler } from './homedir-handler.js';
@@ -8,4 +9,5 @@ export const osHandlers = [
 	cpusHandler,
 	homedirHandler,
 	usernameHandler,
+	architectureHandler,
 ];
