@@ -1,4 +1,5 @@
 import * as  path from 'node:path';
+import * as  stream from 'node:stream/promises';
 import * as  fs from 'node:fs/promises';
 
 const CAT_HANDLER_COMMAND_REGEX = /^cat\s+(\S+)/;
@@ -14,14 +15,11 @@ export const catHandler = async (command, fileManagerState) => {
 		const filePath = path.join(fileManagerState.currentDirectory, fileName);
 		const fileHandler = await fs.open(filePath, 'r');
 
-		await new Promise((resolve, reject) => {
-			const readStream = fileHandler.createReadStream();
+		const readStream = fileHandler.createReadStream();
 
-			readStream.pipe(process.stdout);
+		readStream.pipe(process.stdout);
 
-			readStream.on('close', resolve);
-			readStream.on('error', reject);
-		});
+		await stream.finished(readStream);
 
 		return { isAppropriateHandler: true };
 	} catch {

@@ -1,13 +1,10 @@
 import * as  os from 'node:os';
 import * as  path from 'node:path';
 import * as  fs from 'node:fs/promises';
-import * as  utils from 'node:util';
-import * as  stream from 'node:stream';
+import * as  stream from 'node:stream/promises';
 import * as  zlib from 'node:zlib';
 
 const DECOMPRESS_FILE_HANDLER_COMMAND_REGEX = /^decompress\s+(\S+)\s+(\S+)/;
-
-const pipe = utils.promisify(stream.pipeline);
 
 export const decompressFileHandler = async (command, fileManagerState) => {
 	if (!DECOMPRESS_FILE_HANDLER_COMMAND_REGEX.test(command)) {
@@ -33,7 +30,7 @@ export const decompressFileHandler = async (command, fileManagerState) => {
 		};
 	}
 
-	const brotlisDecompress = zlib.createBrotliDecompress();
+	const brotliDecompress = zlib.createBrotliDecompress();
 
 	try {
 		const fileHandler = await fs.open(filePath, 'r');
@@ -42,7 +39,7 @@ export const decompressFileHandler = async (command, fileManagerState) => {
 		const readStream = fileHandler.createReadStream();
 		const writeStream = destFileHandler.createWriteStream();
 
-		await pipe(readStream, brotlisDecompress, writeStream);
+		await stream.pipeline(readStream, brotliDecompress, writeStream);
 
 		return { isAppropriateHandler: true };
 	} catch {

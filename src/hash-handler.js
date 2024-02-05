@@ -1,5 +1,6 @@
-import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import * as fs from 'node:fs/promises';
+import * as stream from 'node:stream/promises';
 const { createHash } = await import('node:crypto');
 
 const HASH_HANDLER_COMMAND_REGEX = /^hash\s+(\S+)/;
@@ -16,15 +17,11 @@ export const hashHandler = async (command, fileManagerState) => {
 
 	try {
 		const fileHandler = await fs.open(filePath);
+		const fileReadStream = fileHandler.createReadStream();
 
-		await new Promise((resolve, reject) => {
-			const fileReadStream = fileHandler.createReadStream();
+		fileReadStream.pipe(hash).setEncoding('hex').pipe(process.stdout);
 
-			fileReadStream.pipe(hash).setEncoding('hex').pipe(process.stdout);
-
-			fileReadStream.on('close', resolve);
-			fileReadStream.on('error', reject);
-		});
+		await stream.finished(fileReadStream);
 
 		return { isAppropriateHandler: true };
 	} catch {
